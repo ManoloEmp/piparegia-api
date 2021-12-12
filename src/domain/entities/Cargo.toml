@@ -1,0 +1,18 @@
+[package]
+name = "entities"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen= { version = "0.2.75", features = ["serde-serialize"] } #"nightly"
+js-sys = {version = "0.3.52"}
+uuid = { version = "0.8.2", features = ["serde", "v4", "wasm-bindgen"] }
+serde_json = { version = "1.0.66", default-features = false, features = ["alloc"] }
+serde-wasm-bindgen = "0.3.0"
+wasm-bindgen-futures = "0.4.25"
+serde = { version = "1.0.127", features = ["derive"] }

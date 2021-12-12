@@ -1,0 +1,160 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Product {
+  id                 String    @id @default(uuid())
+  createdAt          DateTime  @default(now()) @map(name: "created_at")
+  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+  name               Json
+  description        Json?
+  image              Json?
+  brand              Brand?    @relation(fields: [brandId], references: [id])
+  brandId            String?   @map(name: "brand_id")
+  supplier           Supplier? @relation(fields: [supplierId], references: [id])
+  supplierId         String?   @map(name: "supplier_id")
+  itemType           Type      @default(PIZZA) @map(name: "item_type")
+  variety            Variety   @default(VEGETARIANA)
+  ingredients        Json?
+  recipe             Json?
+  nutritional_info   Json?
+  variant            Variant[]
+  tags               Json?
+  performance        Json?
+  category           Category?  @relation(fields: [categoryId], references: [id])
+  categoryId         String?    @map(name: "category_id")
+  catalogs           Catalog[]
+  published Boolean           @default(false)
+  @@map(name: "products")
+}
+
+model Brand {
+  id                 String    @id @default(uuid())
+  createdAt          DateTime  @default(now()) @map(name: "created_at")
+  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+  supplier           Supplier? @relation(fields: [supplierId], references: [id])
+  supplierId         String?   @map(name: "supplier_id")
+  name               Json
+  image              Json?
+  markup             Float?
+  products            Product[]
+  published Boolean           @default(false)
+  @@map(name: "brands")
+}
+
+model Supplier {
+  id                 String    @id @default(uuid())
+  createdAt          DateTime  @default(now()) @map(name: "created_at")
+  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+  name               Json
+  image              Json?
+  products           Product[]
+  brands             Brand[]
+  published Boolean           @default(false)
+  @@map(name: "suppliers")
+}
+
+model Variant {
+  id                 String    @id @default(uuid())
+  createdAt          DateTime  @default(now()) @map(name: "created_at")
+  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+  price              Float
+  weight             String
+  size               Size      @default(MEDIUM)
+  performance        Json?
+  product            Product   @relation(fields: [productId], references: [id])
+  productId          String    @map(name: "product_id")
+  inventory          Int?
+  catalogs           Catalog[]
+  published Boolean           @default(false)
+  @@map(name: "variants")
+}
+
+model Category {
+  id                 String       @id @default(uuid())
+  createdAt          DateTime  @default(now()) @map(name: "created_at")
+  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+  name               Json
+  description        Json?
+  roll               Json?
+  image              Json?
+  tags               Json?
+  performance        Json?
+  complexity         Json?
+  manager            Manager?  @relation(fields: [managerId], references: [id])
+  managerId          String?   @map(name: "manager_id")
+  superId            String?   @map(name: "super_id")
+  super              Category?   @relation(name: "SuperSubcategory", fields: [superId], references: [id])
+  subcategories      Category[]   @relation(name: "SuperSubcategory")
+  products           Product[]
+  published Boolean  @default(false)
+  @@map(name: "categories")
+}
+
+model Manager {
+  id                 String    @id @default(uuid())
+  createdAt          DateTime  @default(now()) @map(name: "created_at")
+  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+  name               String
+  image              Json?
+  categories         Category[]
+  published Boolean           @default(false)
+  @@map(name: "managers")
+}
+
+model Catalog {
+  id                 String       @id @default(uuid())
+  createdAt          DateTime  @default(now()) @map(name: "created_at")
+  updatedAt          DateTime  @default(now()) @map(name: "updated_at")
+  name               Json
+  description        Json?
+  tags               Json?
+  image              Json?
+  products           Product[]
+  variants           Variant[]
+  published Boolean           @default(false)
+  @@map(name: "catalogs")
+}
+
+
+
+enum State {
+  CANCELLED
+  PREPARING
+  DISPATCHED
+  FULFILLED
+  ERROR
+}
+
+
+enum Type {
+  PIZZA
+  PASTA
+  SOPA
+  BEBIDA
+  INGREDIENTE
+}
+
+enum Variety {
+  VEGETARIANA
+  CARNE
+  MIXTA
+  LIGHT
+}
+
+enum Size {
+  SLICE
+  SMALL
+  MEDIUM
+  LARGE
+  EXTRA
+}
