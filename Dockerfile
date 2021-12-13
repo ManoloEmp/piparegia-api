@@ -2,13 +2,17 @@ FROM node:12.18.1-alpine
 
 ENV NODE_ENV=production
 
+# Create app directory
 WORKDIR /app
 
-COPY ["package.json", "package-lock.json*", "./"]
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+COPY package*.json ./
+COPY prisma ./prisma/
 
-COPY prisma ./src/prisma/
-
+# Install app dependencies
 RUN npm install
+
+RUN npx prisma generate
 
 COPY . .
 
