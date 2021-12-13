@@ -12,7 +12,7 @@ COPY src/prisma ./src/prisma/
 # Install app dependencies
 RUN npm install
 
-RUN npx prisma generate
+RUN cd src/prisma && npx prisma generate
 
 COPY . .
 
