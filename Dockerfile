@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY ["package.json", "package-lock.json*", "./"]
 
-COPY prisma ./prisma/
+COPY prisma ./src/prisma/
 
 RUN npm install
 
