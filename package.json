@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --watchAll",
     "test:staged": "jest",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "prisma:generate": "npx prisma generate"
   },
   "standard": {
     "env": [
