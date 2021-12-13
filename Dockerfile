@@ -6,13 +6,10 @@ WORKDIR /app
 
 COPY ["package.json", "package-lock.json*", "./"]
 
+COPY prisma ./prisma/
+
 RUN npm install
 
 COPY . .
-
-EXPOSE 4000
-
-RUN cd src/prisma  && npx prisma generate
-
 
 CMD ["npm", "start"]
