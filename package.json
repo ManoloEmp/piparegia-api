@@ -22,10 +22,11 @@
     "jest": "^27.0.6",
     "lint-staged": "^11.1.2",
     "prisma": "^2.29.1",
-    "standard": "^16.0.3"
+    "standard": "^16.0.4"
   },
   "dependencies": {
     "@prisma/client": "^2.29.1",
+    "cors": "^2.8.5",
     "cuid": "^2.1.8",
     "express": "^4.17.1"
   }
