@@ -1,19 +1,21 @@
 FROM node:12.18.1-alpine
 
-ENV NODE_ENV=production
-
 # Create app directory
 WORKDIR /app
 
+
+
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
-COPY src/prisma ./src/prisma/
+COPY ./src /app/src/
 
 # Install app dependencies
 RUN npm install
 
-RUN cd src/prisma && npm run prisma:generate
+# RUN npm i -g prisma@3.6.0
 
-COPY . .
+RUN cd src/ && npx prisma generate
+
+EXPOSE 4000
 
 CMD ["npm", "start"]
